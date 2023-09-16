@@ -2,12 +2,12 @@ use anyhow::{Result, anyhow};
 
 #[derive(Debug, Clone, Copy)]
 pub struct Frac {
-    pub num: i32,
-    pub den: u32,
+    pub num: i64,
+    pub den: u64,
 }
 
 impl Frac {
-    pub fn new(num: i32, den: u32) -> Result<Frac> {
+    pub fn new(num: i64, den: u64) -> Result<Frac> {
         if den == 0 {
             return Err(anyhow!("Error: Denominator is zero"));
         }
@@ -38,10 +38,10 @@ impl Frac {
     pub fn reduction(&self) -> Frac {
         let mut num = self.num;
         let mut den = self.den;
-        let mut i: u32 = 2;
-        while i <= num.abs() as u32 && i <= den {
-            if num % i as i32 == 0 && den % i == 0 {
-                num /= i as i32;
+        let mut i: u64 = 2;
+        while i <= num.abs() as u64 && i <= den {
+            if num % i as i64 == 0 && den % i == 0 {
+                num /= i as i64;
                 den /= i;
                 i = 2;
             } else {
@@ -57,7 +57,7 @@ impl std::ops::Add for Frac {
 
     fn add(self, other: Frac) -> Frac {
         let num
-            = self.num * other.den as i32 + self.den as i32 * other.num;
+            = self.num * other.den as i64 + self.den as i64 * other.num;
         let den = self.den * other.den;
         Frac::new(num, den).unwrap().reduction()
     }
@@ -68,7 +68,7 @@ impl std::ops::Sub for Frac {
 
     fn sub(self, other: Frac) -> Frac {
         let num
-            = self.num * other.den as i32 - self.den as i32 * other.num;
+            = self.num * other.den as i64 - self.den as i64 * other.num;
         let den = self.den * other.den;
         Frac::new(num, den).unwrap().reduction()
     }
@@ -88,18 +88,18 @@ impl std::ops::Div for Frac {
     type Output = Frac;
 
     fn div(self, other: Frac) -> Frac {
-        let mut num = self.num * other.den as i32;
+        let mut num = self.num * other.den as i64;
         if other.num < 0 {
             num *= -1;
         }
-        let den = self.den * other.num.abs() as u32;
+        let den = self.den * other.num.abs() as u64;
         Frac::new(num, den).unwrap().reduction()
     }
 }
 
 impl std::cmp::PartialEq for Frac {
     fn eq(&self, other: &Frac) -> bool {
-        self.num * other.den as i32 == self.den as i32 * other.num
+        self.num * other.den as i64 == self.den as i64 * other.num
     }
 }
 
@@ -113,7 +113,7 @@ impl std::cmp::PartialOrd for Frac {
 
 impl std::cmp::Ord for Frac {
     fn cmp(&self, other: &Frac) -> std::cmp::Ordering {
-        (self.num * other.den as i32).cmp(&(self.den as i32 * other.num))
+        (self.num * other.den as i64).cmp(&(self.den as i64 * other.num))
     }
 }
 

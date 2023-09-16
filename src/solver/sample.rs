@@ -19,7 +19,7 @@ impl Generator {
         self.rng.gen_range(min..max)
     }
 
-    fn generate_num_char(&mut self, mut nums: Vec<u32>) -> (char, Vec<u32>) {
+    fn generate_num_char(&mut self, mut nums: Vec<u64>) -> (char, Vec<u64>) {
         let index = self.gen_range(0, nums.len());
         let num = nums.remove(index);
         ((num as u8 + '0' as u8) as char, nums)
@@ -30,7 +30,7 @@ impl Generator {
         self.op_list[op]
     }
 
-    fn generate_num_and_op_char(&mut self, nums: Vec<u32>) -> (char, Vec<u32>) {
+    fn generate_num_and_op_char(&mut self, nums: Vec<u64>) -> (char, Vec<u64>) {
         let num = self.gen_range(0, 2);
         if num == 0 {
             let (c, nums) = self.generate_num_char(nums);
@@ -40,7 +40,7 @@ impl Generator {
         }
     }
 
-    pub fn generate(&mut self, mut nums: Vec<u32>) -> String {
+    pub fn generate(&mut self, mut nums: Vec<u64>) -> String {
         let mut puzzle = String::new();
         let mut num_count = 0;
         let mut op_count = 0;
@@ -72,9 +72,10 @@ impl Generator {
     }
 }
 
-pub fn solver(nums: Vec<u32>, ans: Frac) -> String {
+#[allow(dead_code)]
+pub fn solver(nums: Vec<u64>, ans: Frac) -> String {
     let mut generator = Generator::new();
-    for _ in 0..1000 {
+    for _ in 0..100000 {
         let puzzle = generator.generate(nums.clone());
         let frac = match rpn(&puzzle) {
             Ok(frac) => frac,

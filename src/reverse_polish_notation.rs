@@ -7,7 +7,7 @@ pub fn rpn(str: &String) -> Result<Frac> {
     while i < str.len() {
         let c = str.chars().nth(i).unwrap();
         if c.is_numeric() {
-            stack.push(Frac::new(c.to_digit(10).unwrap() as i32, 1).unwrap());
+            stack.push(Frac::new(c.to_digit(10).unwrap() as i64, 1).unwrap());
         } else {
             let b = stack.pop().unwrap();
             let a = stack.pop().unwrap();

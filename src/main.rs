@@ -29,15 +29,15 @@ fn mode_check(args: &Vec<String>) -> Result<String> {
     Ok(mode.clone())
 }
 
-fn solve_args_check(args: &Vec<String>) -> Result<(Vec<u32>, u32)> {
+fn solve_args_check(args: &Vec<String>) -> Result<(Vec<u64>, u64)> {
     let mut nums = Vec::new();
     for c in args[2].chars() {
         if !c.is_numeric() {
             return Err(anyhow!("Error: Wrong argument"));
         }
-        nums.push(c.to_digit(10).unwrap());
+        nums.push(c.to_digit(10).unwrap() as u64);
     }
-    Ok((nums, args[3].parse::<u32>().unwrap()))
+    Ok((nums, args[3].parse::<u64>().unwrap()))
 }
 
 fn main() {
@@ -45,7 +45,7 @@ fn main() {
     let mode = mode_check(&args).unwrap();
     if mode == "solve" {
         let (nums, ans) = solve_args_check(&args).unwrap();
-        let result = solver(nums, Frac::new(ans as i32, 1).unwrap());
+        let result = solver(nums, Frac::new(ans as i64, 1).unwrap());
         println!("{:?}", result);
     } else if mode == "check" {
         let frac = rpn(&args[2]).unwrap();

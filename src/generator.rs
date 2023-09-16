@@ -1,6 +1,7 @@
 extern crate rand;
 
 use rand::Rng;
+use crate::reverse_polish_notation::rpn;
 
 struct PuzzleGenerator {
     rng: rand::rngs::ThreadRng,
@@ -67,5 +68,19 @@ impl PuzzleGenerator {
 
 pub fn generator(num: usize) -> String {
     let mut generator = PuzzleGenerator::new();
-    format!("{}: {}", num, generator.generate(num))
+    for _ in 0..1000 {
+        let puzzle = generator.generate(num);
+        let frac = match rpn(&puzzle) {
+            Ok(frac) => frac,
+            Err(err) => {
+                println!("{}", err);
+                continue;
+            },
+        };
+        if frac.den == 1 && frac.num >= 0 {
+            return format!("{} = {}", puzzle, frac.num)
+        }
+        println!("{} = {}/{}", puzzle, frac.num, frac.den)
+    }
+    "None".to_string()
 }

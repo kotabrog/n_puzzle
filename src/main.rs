@@ -1,5 +1,6 @@
 mod frac;
 mod generator;
+mod reverse_polish_notation;
 
 use anyhow::{Result, anyhow};
 use generator::generator;

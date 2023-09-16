@@ -23,7 +23,11 @@ impl Frac {
 
     #[allow(dead_code)]
     pub fn to_string(&self) -> String {
-        format!("{}/{}", self.num, self.den)
+        if self.den == 1 {
+            self.num.to_string()
+        } else {
+            format!("{}/{}", self.num, self.den)
+        }
     }
 
     #[allow(dead_code)]
